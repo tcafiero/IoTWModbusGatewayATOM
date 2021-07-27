@@ -61,6 +61,7 @@ void handleData(ModbusMessage response, uint32_t device) {
     JsonObject& json = jsonBuffer.createObject();
     json["site"] = site;
     json["section"] = section;
+    json["sensor"] = contract.server[device].name;
     for (int i = 0; i < contract.server[device].num_sensors ; i++) {
       value = (((response[i * 2 + 3] << 8) & 0xff00) + (response[i * 2 + 4] & 0xFF)) * contract.server[device].sensor[i].factor;
       //Serial.printf("%s=%f\n", contract.server[device].sensor[i].name, value);

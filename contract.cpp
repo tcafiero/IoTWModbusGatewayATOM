@@ -19,9 +19,11 @@ struct contract_struct contract = {.baudrate = 9600, .root = "IoThingsWare", .pl
     {.address = 10, .name = "Spectrometer", .num_sensors = 9, .sensors_address = 0, .sensor = {{.name = "Lux"}, {.name = "F1"}, {.name = "F2"}, {.name = "F3"}, {.name = "F4"}, {.name = "F5"}, {.name = "F6"}, {.name = "F7"}, {.name = "F8"}}}
   }
 #endif
-struct contract_struct contract = {.baudrate = 9600, .root = "IoThingsWare", .plant = "Bestico", .unit = "IndonesiaT1", .num_servers = 2,
+struct contract_struct contract = {.baudrate = 9600, .root = "IoThingsWare", .plant = "Bestico", .unit = "IndonesiaT1", .num_servers = 3,
   .server = {
     {.address = 0x20, .function = READ_INPUT_REGISTER, .name = "XY-MD02", .num_sensors = 2, .sensors_address = 1, .sensor = {{.name = "Temperature", .factor = 0.1}, {.name = "RH", .factor=0.1}}},
+    {.address = 0x21, .function = READ_HOLD_REGISTER, .name = "SQ-522", .num_sensors = 1, .sensors_address = 40, .sensor = {{.name = "PPFD", .factor = 0.1}}},
+    {.address = 0x22, .function = READ_HOLD_REGISTER, .name = "S-Temp&VWC&EC-02", .num_sensors = 2, .sensors_address = 0, .sensor = {{.name = "Temperature", .factor = 0.01}, {.name = "VWC", .factor=0.01}}},
     {.address = 1, .function = READ_INPUT_REGISTER, .name = "Moisture", .num_sensors = 2, .sensors_address = 1, .sensor = {{.name = "Temperature", .factor = 0.1}, {.name = "Moisture", .factor=0.1}}}
 }};
 //END WARNING
