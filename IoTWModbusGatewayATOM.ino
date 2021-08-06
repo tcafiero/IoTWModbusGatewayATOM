@@ -40,11 +40,12 @@ void send(int i) {
       }
     }
   }
-  //Serial.printf("device: %d, server: %d, function: %d, sensoradd: %d, num: %d\n", device, contract.server[device].address, contract.server[device].function, contract.server[device].sensors_address, contract.server[device].num_sensors);
+  Serial.printf("device: %d, server: %d, function: %d, sensoradd: %d, num: %d\n", device, contract.server[device].address, contract.server[device].function, contract.server[device].sensors_address, contract.server[device].num_sensors);
   err = MB.addRequest(device, contract.server[device].address, contract.server[device].function, contract.server[device].sensors_address, contract.server[device].num_sensors);
   if (err != SUCCESS) {
     ModbusError e(err);
     LOG_E("Error creating request: %02X - %s\n", (int)e, (const char *)e);
+    Serial.printf("Error creating request: %02X - %s\n", (int)e, (const char *)e);
   }
 }
 
@@ -56,7 +57,9 @@ void udpPublish(char* message);
 void handleData(ModbusMessage response, uint32_t device) {
   float value;
   char output[256];
-  if (response.getError() == SUCCESS) {
+  int result;
+  result=response.getError();
+  if (result == SUCCESS) {
     DynamicJsonBuffer jsonBuffer;
     JsonObject& json = jsonBuffer.createObject();
     json["site"] = site;
@@ -71,7 +74,11 @@ void handleData(ModbusMessage response, uint32_t device) {
     Serial.println(output);
     udpPublish(output);
     send(next);
-  } else send(current);
+  } else 
+  {
+    Serial.printf("Error=%d\n", result);
+    send(current);
+  }
 }
 
 
@@ -203,7 +210,7 @@ void setup() {
   // - provide onError handler function
   //MB.onErrorHandler(&handleError);
   // Set message timeout to 2000ms
-  MB.setTimeout(100);
+  MB.setTimeout(2000);
   // Start ModbusRTU background task
   MB.begin();
   // void begin(int coreID, uint32_t interval)
